@@ -32,6 +32,6 @@ switch($db_config['db']){
 
 require(__DIR__ . '/core/migrate.function.php');
 
-migrate();
+rollback();
 
 ?>

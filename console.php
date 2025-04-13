@@ -8,6 +8,110 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+class MigrateCommand extends Command
+{
+    protected static $defaultName = 'db:migrate';
+
+    protected function configure(){
+        $this
+            ->setDescription('Activaties the migrations');
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output): int
+    {
+        if(file_exists('migrate.php')){
+            require('migrate.php');
+
+            $output->writeln("<info>Migrated successfully</info>");
+            return Command::SUCCESS;
+        }
+
+        $output->writeln("<error>File migrate.php doesn't exists!</error>");
+        return Command::FAILURE;
+    }
+
+
+}
+
+class RollbackCommand extends Command
+{
+    protected static $defaultName = 'db:rollback';
+
+    protected function configure(){
+        $this
+            ->setDescription('Activaties the rollbacks');
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output): int
+    {
+        if(file_exists('rollback.php')){
+            require('rollback.php');
+
+            $output->writeln("<info>Rollback is successfull</info>");
+            return Command::SUCCESS;
+        }
+
+        $output->writeln("<error>File rollback.php doesn't exists!</error>");
+        return Command::FAILURE;
+    }
+
+
+}
+
+class MakeMigrationCommand extends Command
+{
+    protected static $defaultName = 'db:migration';
+
+    protected function configure()
+    {
+        $this
+            ->setDescription('Creates a new migration')
+            ->addArgument('name', InputArgument::REQUIRED, 'name of migration');
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output): int
+    {
+        $name = $input->getArgument('name');
+        $Dir = __DIR__ . '/db/Migrations';
+        $Path = "$Dir/$name.php";
+
+        if (!is_dir($Dir)) {
+            mkdir($Dir, 0777, true);
+        }
+
+        if (file_exists($Path)) {
+            $output->writeln("<error>Migration $name already exists!</error>");
+            return Command::FAILURE;
+        }
+
+        $template = <<<PHP
+<?php
+
+namespace DB\Migrations;
+
+use Core\Classes\QueryBuilder;
+
+
+class $name
+{
+    public function migrate()
+    {
+        //QueryBuilder::execute("");
+    }
+
+    public function rollback(){
+        //QueryBuilder::destroy('');
+    }
+}
+PHP;
+
+        file_put_contents($Path, $template);
+        $output->writeln("<info>Migration $name created: $Path</info>");
+
+        return Command::SUCCESS;
+    }
+}
+
 class MakeControllerCommand extends Command
 {
     protected static $defaultName = 'app:controller';
@@ -15,8 +119,8 @@ class MakeControllerCommand extends Command
     protected function configure()
     {
         $this
-            ->setDescription('Создаёт новый контроллер')
-            ->addArgument('name', InputArgument::REQUIRED, 'Имя контроллера');
+            ->setDescription('creates a new controller')
+            ->addArgument('name', InputArgument::REQUIRED, 'name of Controller');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -31,7 +135,7 @@ class MakeControllerCommand extends Command
         }
 
         if (file_exists($controllerPath)) {
-            $output->writeln("<error>Контроллер $controllerName уже существует!</error>");
+            $output->writeln("<error>Controller $controllerName already exists!</error>");
             return Command::FAILURE;
         }
 
@@ -50,7 +154,7 @@ class $controllerName
 PHP;
 
         file_put_contents($controllerPath, $template);
-        $output->writeln("<info>Контроллер $controllerName создан: $controllerPath</info>");
+        $output->writeln("<info>Controller $controllerName created: $controllerPath</info>");
 
         return Command::SUCCESS;
     }
@@ -79,7 +183,7 @@ class MakeModelCommand extends Command
         }
 
         if (file_exists($modelPath)) {
-            $output->writeln("<error>Модель $name уже существует!</error>");
+            $output->writeln("<error>Model $name already exists!</error>");
             return Command::FAILURE;
         } 
 
@@ -95,7 +199,7 @@ class MakeModelCommand extends Command
         PHP;
 
         file_put_contents($modelPath, $template);
-        $output->writeln("<info>Контроллер $name создан: $modelPath</info>");
+        $output->writeln("<info>Model $name created: $modelPath</info>");
 
         return Command::SUCCESS;
     }
@@ -104,4 +208,7 @@ class MakeModelCommand extends Command
 $application = new Application('console');
 $application->add(new MakeControllerCommand());
 $application->add(new MakeModelCommand());
+$application->add(new MakeMigrationCommand());
+$application->add(new MigrateCommand());
+$application->add(new RollbackCommand());
 $application->run();

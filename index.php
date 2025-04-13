@@ -128,7 +128,6 @@ switch($db_config['db']){
         break;
 }
 
-
 /*if(file_exists(ROOT.'migrate.php'))
     require(ROOT.'migrate.php');
 */  

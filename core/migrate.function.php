@@ -1,7 +1,9 @@
 <?php
 
+use Core\Classes\DB;
+
 function migrate(){
-    $files = scandir(DB.'Migrations/');
+    $files = scandir('db/Migrations/');
     foreach($files as $file){
         if($file == '.' || $file == '..' || explode('.', $file)[0] == '') continue;
         $class = 'DB\\Migrations\\'.str_replace(['_', '.php'], '', $file);
@@ -12,7 +14,7 @@ function migrate(){
 }
 
 function rollback(){
-    $files = scandir(DB.'Migrations/');
+    $files = scandir('db/Migrations/');
         foreach($files as $file){
             if($file == '.' || $file == '..' || explode('.', $file)[0] == '') continue;
             $class = 'DB\\Migrations\\'.str_replace(['_', '.php'], '', $file);
