@@ -12,6 +12,7 @@ define('MODULES', CORE.'modules/');
 define('METHOD', $_SERVER['REQUEST_METHOD']);
 
 // Require functions
+require('vendor/autoload.php');
 require(CORE.'autoload.function.php');
 require(CORE.'migrate.function.php');
 require(CORE.'url.function.php');
@@ -128,9 +129,9 @@ switch($db_config['db']){
 }
 
 
-if(file_exists(ROOT.'migrate.php'))
+/*if(file_exists(ROOT.'migrate.php'))
     require(ROOT.'migrate.php');
-   
+*/  
 
 $params = $matched['params'];
 
