@@ -1,12 +1,12 @@
 {
-    "name": "winzmcman/befree",
+    "name": "fartuh/fphp",
     "description": "php framework",
     "type": "project",
     "license": "MIT",
     "authors": [
         {
             "name": "Nikita Pavlov",
-            "email": "nikithobbieng@gmail.com"
+            "email": "nikita.pavlov.prof@gmail.com"
         }
     ],
     "require": {},
