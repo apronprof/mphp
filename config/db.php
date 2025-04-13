@@ -5,7 +5,7 @@ return [
 
     'mysql' => [
         'host'    => 'localhost',
-        'name'    => 'befree_online',
+        'name'    => 'mphp',
         'user'    => 'root',
         'pass'    => 'root',
         'charset' => 'utf8'
