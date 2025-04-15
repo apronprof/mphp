@@ -1,5 +1,5 @@
 {
-    "name": "apronprof/fphp",
+    "name": "fartuh/fphp",
     "description": "php framework",
     "type": "project",
     "license": "MIT",
@@ -11,10 +11,7 @@
     ],
     "require": {
         "symfony/console": "^6.4",
-        "php": ">=8.3",
-        "ext-pdo": "*",
-        "ext-pdo_mysql": "*"
-}
+        "rubix/ml": "^2.5"
     },
     "require-dev": {
         "phpunit/phpunit": "^12"

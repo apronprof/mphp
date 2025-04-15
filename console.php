@@ -33,13 +33,50 @@ class MigrateCommand extends Command
 
 }
 
+class TrainModelCommand extends Command
+{
+
+    protected static $defaultName = 'ml:train';
+
+    protected function configure(){
+        $this
+            ->setDescription('trains the model')
+            ->addArgument('name', InputArgument::REQUIRED, 'name of trainer');    
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output): int
+    {
+        $name = $input->getArgument('name');
+        $Dir = __DIR__ . '/ml/trainers/';
+        $Path = "$Dir/$name.php";
+
+        if (!is_dir($Dir)) {
+            mkdir($Dir, 0777, true);
+        }
+
+        if(file_exists("$Path")){
+            require($Path);
+
+            $output->writeln("<info>Model is trained successfully</info>");
+            return Command::SUCCESS;
+        }
+
+        $output->writeln("<error>File $name.php doesn't exists!</error>");
+        return Command::FAILURE;
+
+    }
+
+
+}
+
 class RollbackCommand extends Command
 {
     protected static $defaultName = 'db:rollback';
 
     protected function configure(){
         $this
-            ->setDescription('Activaties the rollbacks');
+            ->setDescription('Activaties the rollbacks')
+            ->addArgument('name', InputArgument::REQUIRED, 'name of trainer');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -56,6 +93,55 @@ class RollbackCommand extends Command
     }
 
 
+}
+
+class MakeMlTrainerCommand extends Command
+{
+    protected static $defaultName = 'ml:trainer';
+
+    protected function configure()
+    {
+        $this
+            ->setDescription('Creates a new ml trainer for a model')
+            ->addArgument('name', InputArgument::REQUIRED, 'name of trainer');
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output): int
+    {
+        $name = $input->getArgument('name');
+        $Dir = __DIR__ . '/ml/trainers/';
+        $Path = "$Dir/$name.php";
+
+        if (!is_dir($Dir)) {
+            mkdir($Dir, 0777, true);
+        }
+
+        if (file_exists($Path)) {
+            $output->writeln("<error>Model $name already exists!</error>");
+            return Command::FAILURE;
+        }
+
+        $template = <<<PHP
+<?php
+
+namespace ML\Trainers;
+
+require __DIR__ . '/vendor/autoload.php';
+
+use Core\Classes\QueryBuilder;
+
+
+class $name extends MLTrainer
+{
+    
+}
+PHP;
+
+        file_put_contents($Path, $template);
+        $output->writeln("<info>Trainer $name created: $Path</info>");
+
+        return Command::SUCCESS;
+    }
 }
 
 class MakeMigrationCommand extends Command
@@ -211,4 +297,7 @@ $application->add(new MakeModelCommand());
 $application->add(new MakeMigrationCommand());
 $application->add(new MigrateCommand());
 $application->add(new RollbackCommand());
+$application->add(new MakeMlTrainerCommand());
+$application->add(new TrainModelCommand());
+
 $application->run();
