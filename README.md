@@ -40,6 +40,37 @@ This file, if it exists, works whenever you go to your site. You can use command
 
 <hr/>
 
+### Console
+
+#### php console app:controller Name
+
+creates a NameController.php file for a controller with base structure in app
+
+#### php console app:model Name
+
+creates a Name.php file for a model with base structure in app
+
+#### php console db:migration Name
+
+creates a Name.php file with base structure in db/migrations
+
+#### php console db:migrate
+
+Activates all the migrations created
+
+#### php console db:rollback 
+
+activates the rollback function of each migration
+
+#### php console ml:trainer Name
+
+creates a new Name.php model trainer in ml/trainers
+
+#### php console ml:train Name
+
+initiates the train for a trainer called Name.php
+
+
 ### Routes
 
 Routes are located in `config/urls.php`
@@ -57,4 +88,6 @@ In order to use parameters in url you need to use {} around the name of a parame
 
 Use the method _404 to choose a controller and its method for handling unknown routes. It takes only one parameter that is controller.
 
-## We're not done with this tutorial yet
+
+
+## We're not done with this tutorial 

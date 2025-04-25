@@ -7,7 +7,8 @@ define('PUB', ROOT.'public/');
 define('DB', ROOT.'db/');
 define('CORE', ROOT.'core/');
 define('CLASSES', CORE.'classes/');
-define('MODULES', CORE.'modules/');
+define('MODULES', CORE.'modules/'); // get rid of later
+define('ML', __DIR__.'/ml/');
 
 define('METHOD', $_SERVER['REQUEST_METHOD']);
 

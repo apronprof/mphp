@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use \Core\Classes\DB;
+use \Core\CLasses\MLService;
 use \App\Models\User;
 
 class IndexController extends Controller
@@ -28,6 +29,10 @@ class IndexController extends Controller
 
         $this->view('index', ['user' => $user, 'data' => $data]);
          */
+
+        $lr = new MLService('lr');
+        var_dump($lr->predict([220]));
+
         $this->view('home');
     }
 
