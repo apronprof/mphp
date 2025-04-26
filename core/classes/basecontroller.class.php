@@ -4,13 +4,13 @@ namespace Core\Classes;
 
 use Nyholm\Psr7\Factory\Psr17Factory;
 
-class Controller
+class BaseController
 {
     protected function config($type){
         return require(CONFIG.$type.'.php');
     }
 
-    protected function responce($status = 200, $body = '', $type='text/html'){
+    protected function response($status = 200, $body = '', $type='text/html'){
         $psr17Factory = new Psr17Factory();
         $response = $psr17Factory->createResponse($status);
         $body = $psr17Factory->createStream($body);

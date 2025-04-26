@@ -54,7 +54,7 @@ class Router
 
             return ['controller' => $controller, 'params' => $params];
         }
-        return false; 
+        return ['controller' => 'Controller@_404', 'params' => []]; 
     }
 
     public function matchPost($url_arr){
