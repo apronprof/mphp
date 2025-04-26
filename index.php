@@ -7,7 +7,6 @@ define('PUB', ROOT.'public/');
 define('DB', ROOT.'db/');
 define('CORE', ROOT.'core/');
 define('CLASSES', CORE.'classes/');
-define('MODULES', CORE.'modules/'); // get rid of later
 define('ML', __DIR__.'/ml/');
 
 define('METHOD', $_SERVER['REQUEST_METHOD']);
@@ -70,11 +69,9 @@ $router = require(CONFIG.'urls.php');
 
 // Matching routes
 if(METHOD == 'GET'){
-    http_response_code(200);
     $matched = $router->matchGet($url->getUrl());
 }
 else if(METHOD == 'POST'){
-    http_response_code(200);
     $matched = $router->matchPost($url->getUrl());
 }
 else{
@@ -82,21 +79,6 @@ else{
     exit('This HTTP method is not allowed');
 }
 
-
-// delete later
-//
-// Handling 404 error
-if($matched == false){
-    if(DEBUG){
-        Debug::_404($url);
-        exit();
-    }
-
-    $controller = $router->get404();
-    if($controller == null)
-        exit('Error 404 not found');
-    $matched = ['controller' => $controller, 'params' => ['url' => $url->getUrl('string')]];
-}
 
 foreach($matched['params'] as $key => $value){
     $request = $request->withAttribute($key, $value);
