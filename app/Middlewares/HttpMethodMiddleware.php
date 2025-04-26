@@ -7,24 +7,18 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ResponseInterface;
 
-class AuthMiddleware extends Middleware implements MiddlewareInterface
+class HttpMethodMiddleware extends Middleware implements MiddlewareInterface
 {
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        if (!$this->isAuthorized($request)) {
+        if ($request->getMethod() != "GET" && $request->getMethod() != "POST") {
             $factory = $this->getResponse();
-            return $factory->createResponse(401)
-                           ->withBody($factory->createStream('Unauthorized'));
+            return $factory->createResponse(405)
+                           ->withBody($factory->createStream('HTTP method not allowed'));
         }
 
         // Передаем дальше, если всё хорошо
         return $handler->handle($request);
-    }
-
-    private function isAuthorized(ServerRequestInterface $request): bool
-    {
-        // Тут можно добавить свою проверку авторизации
-        return isset($_SESSION['user']);
     }
 }
 

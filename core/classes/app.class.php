@@ -4,10 +4,10 @@ namespace Core\Classes;
 
 class App
 {
-    public static function findController($controller, $request){
+    public static function findController($data, $request){
 
         // Getting names of a controller and a method
-        $path = explode('@', $controller);
+        $path = explode('@', $data);
         $method = $path[1];
         $controller = '\App\Controllers\\'.$path[0];
 

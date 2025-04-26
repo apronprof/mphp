@@ -118,13 +118,14 @@ switch($db_config['db']){
 // Middlewares
 session_start();
 
-$middlewares = require_once(CONFIG . 'middlewares.php');
+$middlewares = array_merge(require_once(CONFIG . 'middlewares.php'), $matched['controller'][1]);
 
 
-$_SESSION['user'] = '';
+//$_SESSION['user'] = '';
+unset($_SESSION);
 
 $finalHandler = function (Psr\Http\Message\ServerRequestInterface $request) use ($matched) {
-    return App::findController($matched['controller'], $request);
+    return App::findController($matched['controller'][0], $request);
 };
 
 $middlewareManager = new MiddlewareManager($middlewares, $finalHandler);

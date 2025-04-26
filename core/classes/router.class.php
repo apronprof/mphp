@@ -13,12 +13,12 @@ class Router
 
     }
 
-    public function get($url, $controller){
-        $this->get[$url] = $controller;
+    public function get($url, $controller, $middlewares = []){
+        $this->get[$url] = [$controller, $middlewares];
     }
 
-    public function post($url, $controller){
-        $this->post[$url] = $controller;
+    public function post($url, $controller, $middlewares = []){
+        $this->post[$url] = [$controller, $middlewares];
     }
 
     public function group($prefix, $function){
@@ -54,7 +54,7 @@ class Router
 
             return ['controller' => $controller, 'params' => $params];
         }
-        return ['controller' => 'Controller@_404', 'params' => []]; 
+        return ['controller' => ['Controller@_404', []], 'params' => []]; 
     }
 
     public function matchPost($url_arr){
