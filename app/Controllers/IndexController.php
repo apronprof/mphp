@@ -30,10 +30,10 @@ class IndexController extends Controller
         $this->view('index', ['user' => $user, 'data' => $data]);
          */
 
-        $lr = new MLService('lr');
-        echo $lr->predict([220])[0];
+//        $lr = new MLService('lr');
+//        echo $lr->predict([220])[0];
 
-        echo $request->urlParams['id'];
+        echo $request->getAttribute('id');
 
         $this->view('home');
     }

@@ -13,9 +13,6 @@ class App
 
 
         $app = new $controller();
-        if($params == false)
-            return $app->$method();
-        else
-            return $app->$method($params);
+        return $app->$method($params);
     }
 }

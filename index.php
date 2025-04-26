@@ -23,7 +23,8 @@ use \Core\Classes\URL as URL;
 use \Core\Classes\App as App;
 use \Core\Classes\DB as DB;
 use \Core\Classes\Debug as Debug;
-use \Core\Classes\Request as Request;
+use Nyholm\Psr7Server\ServerRequestCreator;
+use Nyholm\Psr7\Factory\Psr17Factory;
 
 
 // Require config
@@ -31,9 +32,23 @@ $config['app'] = require(CONFIG.'app.php');
 define('DEBUG', $config['app']['debug']);
 
 
-// Let's get URL from the GET parameter and give it to URL class
-$url = new URL($_GET['url']);
+// PSR-7 creating Request
 
+$psr17Factory = new Psr17Factory();
+$creator = new ServerRequestCreator(
+    $psr17Factory, // ServerRequestFactory
+    $psr17Factory, // UriFactory
+    $psr17Factory, // UploadedFileFactory
+    $psr17Factory  // StreamFactory
+);
+
+// Теперь Request будет сделан из суперглобальных массивов
+$request = $creator->fromGlobals();
+
+$customPath = $_GET['url'] ?? '/';
+$request = $request->withUri($request->getUri()->withPath("/" . ltrim($customPath, '/')));
+
+$url = new Url(ltrim($request->getUri()->getPath(), '/'));
 
 // Debugging
 
@@ -66,6 +81,7 @@ else{
 }
 
 
+
 // Handling 404 error
 if($matched == false){
     if(DEBUG){
@@ -79,8 +95,12 @@ if($matched == false){
     $matched = ['controller' => $controller, 'params' => ['url' => $url->getUrl('string')]];
 }
 
-$request = Request::fromGlobals();
-$request->addUrlParams($matched['params']);
+foreach($matched['params'] as $key => $value){
+    $request = $request->withAttribute($key, $value);
+}
+
+//$request = Request::fromGlobals();
+//$request->addUrlParams($matched['params']);
 
 // Middlewares
 session_start();
@@ -136,8 +156,6 @@ switch($db_config['db']){
 /*if(file_exists(ROOT.'migrate.php'))
     require(ROOT.'migrate.php');
 */  
-
-$params = $matched['params'];
 
 // Let's get the information
 $controller = $matched['controller'];
