@@ -80,7 +80,6 @@ if($matched == false){
 }
 
 $request = Request::fromGlobals();
-
 $request->addUrlParams($matched['params']);
 
 // Middlewares
@@ -144,7 +143,7 @@ $params = $matched['params'];
 $controller = $matched['controller'];
 
 // Looking for a controller that will handle the request
-App::findController($controller, $params);
+App::findController($controller, $request);
 
 // Closing the db connection
 DB::close();

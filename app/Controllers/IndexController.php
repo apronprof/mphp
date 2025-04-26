@@ -8,7 +8,7 @@ use \App\Models\User;
 
 class IndexController extends Controller
 {
-    public function index(){
+    public function index($request){
         /*$user = $_SESSION['user'];
 
         $stmt = User::prepare("SELECT * FROM users WHERE user = ?");
@@ -31,7 +31,9 @@ class IndexController extends Controller
          */
 
         $lr = new MLService('lr');
-        var_dump($lr->predict([220]));
+        echo $lr->predict([220])[0];
+
+        echo $request->urlParams['id'];
 
         $this->view('home');
     }

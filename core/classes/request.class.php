@@ -8,8 +8,8 @@ class Request
     public function __construct(
         public readonly string $method,
         public readonly string $uri,
-        public readonly array $query,
-        public readonly array $body,
+        public readonly array $get,
+        public readonly array $post,
         public readonly array $headers,
         public readonly array $cookies,
         public readonly ?array $session)
