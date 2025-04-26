@@ -34,11 +34,12 @@ class IndexController extends Controller
 //        echo $lr->predict([220])[0];
 
 
-        $this->view('home');
+        return $this->view('home', ['hi' => 'he']);
     }
 
     public function user($request){
         echo $request->getAttribute('id');
+        return $this->responce(200);
     }
 
     public function _404($params){

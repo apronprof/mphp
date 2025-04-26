@@ -2,19 +2,42 @@
 
 namespace Core\Classes;
 
+use Nyholm\Psr7\Factory\Psr17Factory;
+
 class Controller
 {
-
     protected function config($type){
         return require(CONFIG.$type.'.php');
     }
 
+    protected function responce($status = 200, $body = '', $type='text/html'){
+        $psr17Factory = new Psr17Factory();
+        $response = $psr17Factory->createResponse($status);
+        $body = $psr17Factory->createStream($body);
+
+        return $response
+            ->withBody($body)
+            ->withHeader('Content-Type', $type);
+    }
+
     protected function view($__name, $__params = []){
-        foreach($__params as $__key => $__param){
-            $$__key = $__param;
-        }
+        $psr17Factory = new Psr17Factory();
         include(CORE . 'assets.function.php');
+
+        ob_start();
+        extract($__params);
+
         require(PUB . "views/$__name.php");
+
+        $html = ob_get_clean();
+
+        // Собираем Response
+        $response = $psr17Factory->createResponse(200);
+        $body = $psr17Factory->createStream($html);
+
+        return $response
+            ->withBody($body)
+            ->withHeader('Content-Type', 'text/html');
     }
 
 }
