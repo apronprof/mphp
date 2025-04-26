@@ -13,7 +13,8 @@ class App
 
 
         $app = new $controller();
-        self::emit($app->$method($request));
+        return $app->$method($request);
+        //self::emit($app->$method($request));
     }
 
     private static function emit($response){

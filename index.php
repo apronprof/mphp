@@ -23,8 +23,10 @@ use \Core\Classes\URL as URL;
 use \Core\Classes\App as App;
 use \Core\Classes\DB as DB;
 use \Core\Classes\Debug as Debug;
+use \Core\Classes\MiddlewareManager as MiddlewareManager;
 use Nyholm\Psr7Server\ServerRequestCreator;
 use Nyholm\Psr7\Factory\Psr17Factory;
+use Laminas\HttpHandlerRunner\Emitter\SapiEmitter;
 
 
 // Require config
@@ -81,7 +83,8 @@ else{
 }
 
 
-
+// delete later
+//
 // Handling 404 error
 if($matched == false){
     if(DEBUG){
@@ -102,35 +105,8 @@ foreach($matched['params'] as $key => $value){
 //$request = Request::fromGlobals();
 //$request->addUrlParams($matched['params']);
 
-// Middlewares
-session_start();
 
-$middlewares = scandir(APP . 'Middlewares');
 
-foreach($middlewares as $middleware){
-    if($middleware == '.' || $middleware == '..' || explode('.', $middleware)[0] == '') continue;
-
-    $middleware = str_replace('.php', '', $middleware);
-
-    $class = '\\App\\Middlewares\\'.$middleware;
-
-    $obj = new $class();
-    
-    $result = $obj->handle(['url' => $url->getUrl('string'), 'urlObject' => $url, 'controller' => $matched['controller']]);
-
-    if($result != true){
-        $mid = '\\App\\Middlewares\\'.$middleware;
-        $mid = new $mid();
-        if(method_exists($mid, 'fail')){
-            $mid->fail();
-            exit();
-        } 
-        else{
-            echo "error in the middleware $middleware";
-            exit();
-        }
-    }
-}
 
 
 // DB connection
@@ -157,11 +133,24 @@ switch($db_config['db']){
     require(ROOT.'migrate.php');
 */  
 
-// Let's get the information
-$controller = $matched['controller'];
+// Middlewares
+session_start();
 
-// Looking for a controller that will handle the request
-App::findController($controller, $request);
+$middlewares = require_once(CONFIG . 'middlewares.php');
+
+
+$_SESSION['user'] = '';
+
+$finalHandler = function (Psr\Http\Message\ServerRequestInterface $request) use ($matched) {
+    return App::findController($matched['controller'], $request);
+};
+
+$middlewareManager = new MiddlewareManager($middlewares, $finalHandler);
+$response = $middlewareManager->handle($request);
+
+$emitter = new SapiEmitter();
+$emitter->emit($response);
+
 
 // Closing the db connection
 DB::close();

@@ -2,13 +2,16 @@
 
 namespace App\Middlewares;
 
-class Middleware
-{
-    public function handle($request){
-        return true;
-    }
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Message\ResponseInterface;
+use Nyholm\Psr7\Factory\Psr17Factory;
 
-    public function fail(){
-        echo 'failed';
+
+class Middleware 
+{
+    protected function getResponse(){
+        return new Psr17Factory();
     }
 }
