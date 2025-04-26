@@ -23,6 +23,7 @@ use \Core\Classes\URL as URL;
 use \Core\Classes\App as App;
 use \Core\Classes\DB as DB;
 use \Core\Classes\Debug as Debug;
+use \Core\Classes\Request as Request;
 
 
 // Require config
@@ -77,6 +78,10 @@ if($matched == false){
         exit('Error 404 not found');
     $matched = ['controller' => $controller, 'params' => ['url' => $url->getUrl('string')]];
 }
+
+$request = Request::fromGlobals();
+
+$request->addUrlParams($matched['params']);
 
 // Middlewares
 session_start();

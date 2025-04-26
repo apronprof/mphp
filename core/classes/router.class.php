@@ -30,7 +30,7 @@ class Router
 
         foreach($set_urls as $url => $controller){
             $get_arr = explode('/', $url);
-            $params = false;
+            $params;
 
             for($i=0;$i<count($get_arr);$i++){
                 if(!isset($url_arr[$i])){
@@ -54,7 +54,7 @@ class Router
 
             return ['controller' => $controller, 'params' => $params];
         }
-        return false;
+        return false; 
     }
 
     public function matchPost($url_arr){
