@@ -230,11 +230,12 @@ class MakeControllerCommand extends Command
 
 namespace App\Controllers;
 
-class $controllerName
+class $controllerName extends Controller
 {
     public function index()
     {
-        // TODO: реализовать метод
+        
+        return $this->response(200);
     }
 }
 PHP;
