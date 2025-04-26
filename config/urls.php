@@ -7,7 +7,7 @@ $router = new Router;
 // Routes
 
 $router->get('', 'IndexController@index');
-$router->get('user/{id}', 'IndexController@index');
+$router->get('user/{id}', 'IndexController@user');
 
 $router->_404('IndexController@_404');
 

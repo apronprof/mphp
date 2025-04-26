@@ -33,9 +33,12 @@ class IndexController extends Controller
 //        $lr = new MLService('lr');
 //        echo $lr->predict([220])[0];
 
-        echo $request->getAttribute('id');
 
         $this->view('home');
+    }
+
+    public function user($request){
+        echo $request->getAttribute('id');
     }
 
     public function _404($params){

@@ -30,7 +30,7 @@ class Router
 
         foreach($set_urls as $url => $controller){
             $get_arr = explode('/', $url);
-            $params;
+            $params = [];
 
             for($i=0;$i<count($get_arr);$i++){
                 if(!isset($url_arr[$i])){
