@@ -12,9 +12,9 @@ class AuthMiddleware extends Middleware implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         if (!$this->isAuthorized($request)) {
-            $factory = $this->getResponse();
-            return $factory->createResponse(401)
-                           ->withBody($factory->createStream('Unauthorized'));
+            $response = $this->getResponse();
+            return $response->createResponse(401)
+                           ->withBody($response->createStream('Unauthorized'));
         }
 
         // Передаем дальше, если всё хорошо

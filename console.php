@@ -198,6 +198,66 @@ PHP;
     }
 }
 
+class MakeMiddlewareCommand extends Command
+{
+    protected static $defaultName = 'app:middleware';
+
+    protected function configure()
+    {
+        $this
+            ->setDescription('creates a new middleware')
+            ->addArgument('name', InputArgument::REQUIRED, 'name of Middleware');
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output): int
+    {
+        $name = $input->getArgument('name');
+        $controllerName = ucfirst($name) . 'Controller';
+        $controllerDir = __DIR__ . '/app/Middlewares';
+        $controllerPath = "$controllerDir/$controllerName.php";
+
+        if (!is_dir($controllerDir)) {
+            mkdir($controllerDir, 0777, true);
+        }
+
+        if (file_exists($controllerPath)) {
+            $output->writeln("<error>Controller $controllerName already exists!</error>");
+            return Command::FAILURE;
+        }
+
+        $template = <<<PHP
+<?php
+
+namespace App\Middlewares;
+
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
+use Psr\Http\Message\ResponseInterface;
+
+class HttpMethodMiddleware extends Middleware implements MiddlewareInterface
+{
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
+    {
+        if (false) {
+            $response = $this->getResponse();
+            return $response->createResponse(405)
+                           ->withBody($response->createStream('HTTP method not allowed'));
+        }
+
+        // Передаем дальше, если всё хорошо
+        return $handler->handle($request);
+    }
+}
+PHP;
+
+        file_put_contents($controllerPath, $template);
+        $output->writeln("<info>Controller $controllerName created: $controllerPath</info>");
+
+        return Command::SUCCESS;
+    }
+}
+
 class MakeControllerCommand extends Command
 {
     protected static $defaultName = 'app:controller';
@@ -294,6 +354,7 @@ class MakeModelCommand extends Command
 
 $application = new Application('console');
 $application->add(new MakeControllerCommand());
+$application->add(new MakeMiddlewareCommand());
 $application->add(new MakeModelCommand());
 $application->add(new MakeMigrationCommand());
 $application->add(new MigrateCommand());

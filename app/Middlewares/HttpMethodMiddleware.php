@@ -12,9 +12,9 @@ class HttpMethodMiddleware extends Middleware implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         if ($request->getMethod() != "GET" && $request->getMethod() != "POST") {
-            $factory = $this->getResponse();
-            return $factory->createResponse(405)
-                           ->withBody($factory->createStream('HTTP method not allowed'));
+            $response = $this->getResponse();
+            return $response->createResponse(405)
+                           ->withBody($response->createStream('HTTP method not allowed'));
         }
 
         // Передаем дальше, если всё хорошо

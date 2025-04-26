@@ -121,8 +121,7 @@ session_start();
 $middlewares = array_merge(require_once(CONFIG . 'middlewares.php'), $matched['controller'][1]);
 
 
-//$_SESSION['user'] = '';
-unset($_SESSION);
+$_SESSION['user'] = '';
 
 $finalHandler = function (Psr\Http\Message\ServerRequestInterface $request) use ($matched) {
     return App::findController($matched['controller'][0], $request);
