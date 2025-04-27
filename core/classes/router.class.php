@@ -54,6 +54,9 @@ class Router
 
             return ['controller' => $controller, 'params' => $params];
         }
+        if(isset($this->_404)){
+            return ['controller' => [$this->_404, []], 'params' => []];
+        }
         return ['controller' => ['Controller@_404', []], 'params' => []]; 
     }
 

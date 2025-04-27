@@ -1,74 +1,79 @@
-# Befree
-befree is a free open source php framework.
+# mPHP
+mPHP is a free open source php framework with machine learning opportunities.
 
 ## Getting started
-As you download the framework's files and launch it on apache2, everything will already be working.
+Download the files from the main branch using
+
+> gh repo clone apronprof/mphp
+
+run 
+
+>composer install
+
+you're up to work.
+
+
 ### File structure
-![app, config, core, db, public, tests, vendor, composer.json, composer.lock, index.php, migrate.php, phpunit.xml](https://i.ibb.co/02r0hRC/Screenshot-2019-01-28-14-23-04.png)
 
 **app**
 
-This folder will contain controllers and models that you will create.
+This folder will contain controllers, models and middlewares you create.
 
 **config**
 
-This folder is used for giving the framework data about your app, database and so on.
+This folder is used for giving the framework data about your app, database and middlewares and urls.
 
 **core**
 
-You must never touch this folder, there are core files located inside it. If you change something, framework can stop working.
+You must never touch this folder, there are core files located inside of it.
 
 **db**
 
-This folder is meant to be used for keeping migrations and file databases (sqlite3) inside.
+This folder is meant to be used for keeping migrations and file databases (sqlite3).
 
 **public**
 
 There are views and assets in this folder.
 
-**tests**
-
-This folder contains all the tests you create for your app.
-
 **vendor**
 
-This is a folder created by composer.
-
-**migrate.php**
-
-This file, if it exists, works whenever you go to your site. You can use commands for migrating there.
+Composer folder.
 
 <hr/>
 
-### Console
+### CLI
 
 #### php console app:controller Name
 
 creates a NameController.php file for a controller with base structure in app
 
-#### php console app:model Name
+> php console app:model Name
 
 creates a Name.php file for a model with base structure in app
 
-#### php console db:migration Name
+> php console db:migration Name
 
 creates a Name.php file with base structure in db/migrations
 
-#### php console db:migrate
+> php console db:migrate
 
 Activates all the migrations created
 
-#### php console db:rollback 
+> php console db:rollback 
 
 activates the rollback function of each migration
 
-#### php console ml:trainer Name
+> php console ml:trainer Name
 
 creates a new Name.php model trainer in ml/trainers
 
-#### php console ml:train Name
+> php console ml:train Name
 
 initiates the train for a trainer called Name.php
+
+> php console app:middleware Name
+
+creates a new Name.php middleware
 
 
 ### Routes
@@ -83,6 +88,9 @@ You can create new routes by using the methods `get()` and `post()` of the objec
 route must look like this 'shop/items' without slashes at the start and the end of a string.
 
 The second parameter have to look like 'name_of_the_controller@name_of_the_method'.
+
+the third parameter is for middlewares 
+[new \App\Middlewares\HttpMethodMiddleware(), ...]
 
 In order to use parameters in url you need to use {} around the name of a parameter. (For example 'users/{id}'). The parameter will be in the array $parameters that will be given as the first parameter to your controller.
 
