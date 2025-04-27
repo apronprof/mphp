@@ -63,22 +63,12 @@ else{
 }
 
 
-// Require routes
+// Route parsing 
 $router = require(CONFIG.'urls.php');
 
+$router->setMethod($request->getMethod());
 
-// Matching routes
-if(METHOD == 'GET'){
-    $matched = $router->matchGet($url->getUrl());
-}
-else if(METHOD == 'POST'){
-    $matched = $router->matchPost($url->getUrl());
-}
-else{
-    http_response_code(405);
-    exit('This HTTP method is not allowed');
-}
-
+$matched = $router->match($url->getUrl());
 
 foreach($matched['params'] as $key => $value){
     $request = $request->withAttribute($key, $value);
@@ -121,7 +111,7 @@ session_start();
 $middlewares = array_merge(require_once(CONFIG . 'middlewares.php'), $matched['controller'][1]);
 
 
-$_SESSION['user'] = '';
+//$_SESSION['user'] = '';
 
 $finalHandler = function (Psr\Http\Message\ServerRequestInterface $request) use ($matched) {
     return App::findController($matched['controller'][0], $request);
