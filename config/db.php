@@ -7,7 +7,7 @@ return [
         'host'    => 'localhost',
         'name'    => 'mphp',
         'user'    => 'root',
-        'pass'    => 'root',
+        'pass'    => 'toor',
         'charset' => 'utf8'
     ],
 
