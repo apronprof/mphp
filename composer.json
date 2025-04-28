@@ -16,7 +16,8 @@
         "psr/http-server-handler": "^1.0",
         "psr/http-server-middleware": "^1.0",
         "nyholm/psr7-server": "^1.1",
-        "laminas/laminas-httphandlerrunner": "^2.11"
+        "laminas/laminas-httphandlerrunner": "^2.11",
+        "phpunit/phpunit": "^12.1"
     },
     "autoload":{
         "psr-4":{
