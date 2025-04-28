@@ -11,7 +11,7 @@ class DB
 
     private static $link = null;
 
-    public static function connect($dsn, $user = 'root', $pass = '', $sqlite3 = false){
+    public static function connect($dsn, $user, $pass, $sqlite3 = false){
         try{
             if(self::$link != null) throw new PDOException('already connected to DB');
 
@@ -21,7 +21,7 @@ class DB
                 self::$link = new \PDO($dsn, $user, $pass);
         }
         catch(PDOException $e){
-            echo $e->getMessage().'<br/>'.'line: '.$e->getLine();
+            error_log($e->getMessage().'<br/>'.'line: '.$e->getLine());
         }
     }
 
