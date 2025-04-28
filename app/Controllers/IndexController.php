@@ -3,7 +3,7 @@
 namespace App\Controllers;
 
 use \Core\Classes\DB;
-use \Core\CLasses\MLService;
+use \Core\Classes\MLService;
 use \App\Models\User;
 
 class IndexController extends Controller

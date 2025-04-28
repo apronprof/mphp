@@ -13,12 +13,10 @@ define('METHOD', $_SERVER['REQUEST_METHOD']);
 
 // Require functions
 require('vendor/autoload.php');
-require(CORE.'autoload.function.php');
-require(CORE.'migrate.function.php');
 require(CORE.'url.function.php');
 
 
-use \Core\Classes\URL as URL;
+use \Core\Classes\Url as URL;
 use \Core\Classes\App as App;
 use \Core\Classes\DB as DB;
 use \Core\Classes\Debug as Debug;
@@ -26,6 +24,8 @@ use \Core\Classes\MiddlewareManager as MiddlewareManager;
 use Nyholm\Psr7Server\ServerRequestCreator;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Laminas\HttpHandlerRunner\Emitter\SapiEmitter;
+error_reporting(E_ALL);
+    ini_set('display_errors', 1);
 
 
 // Require config

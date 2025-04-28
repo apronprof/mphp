@@ -2,7 +2,7 @@
 
 namespace Core\Classes;
 
-class URL
+class Url
 {
 
     /*
