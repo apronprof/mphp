@@ -9,6 +9,10 @@ $router = new Router;
 $router->get('', 'IndexController@index');
 $router->get('auth/{id}', 'IndexController@user', [new App\Middlewares\AuthMiddleware()]);
 
+$router->group('user', function($router){
+    $router->get('/{id}', 'IndexController@index');
+});
+
 $router->_404('IndexController@_404');
 
 // End

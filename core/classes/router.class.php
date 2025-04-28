@@ -11,6 +11,7 @@ class Router
         $delete = [],
         $patch = [],
         $method = 'get',
+        $prefix = '',
         $_404 = null;
 
     public function __construct(){
@@ -25,27 +26,30 @@ class Router
     }
 
     public function get($url, $controller, $middlewares = []){
-        $this->get[$url] = [$controller, $middlewares];
+        $this->get[$this->prefix . $url] = [$controller, $middlewares];
     }
 
     public function post($url, $controller, $middlewares = []){
-        $this->post[$url] = [$controller, $middlewares];
+        $this->post[$this->prefix . $url] = [$controller, $middlewares];
     }
 
     public function put($url, $controller, $middlewares = []){
-        $this->put[$url] = [$controller, $middlewares];
+        $this->put[$this->prefix . $url] = [$controller, $middlewares];
     }
 
     public function delete($url, $controller, $middlewares = []){
-        $this->delete[$url] = [$controller, $middlewares];
+        $this->delete[$this->prefix . $url] = [$controller, $middlewares];
     }
 
     public function patch($url, $controller, $middlewares = []){
-        $this->patch[$url] = [$controller, $middlewares];
+        $this->patch[$this->prefix . $url] = [$controller, $middlewares];
     }
 
     public function group($prefix, $function){
-        $function($prefix);
+        $prevPrefix = $this->prefix;
+        $this->prefix = $prefix;
+        $function($this);
+        $this->prefix = $prevPrefix;
     }
 
     public function match($url_arr){
