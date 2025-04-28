@@ -1,16 +1,6 @@
 <?php
 
-define('ROOT', __DIR__.'/');
-define('CONFIG', ROOT.'config/');
-define('APP', ROOT.'app/');
-define('PUB', ROOT.'public/');
-define('DB', ROOT.'db/');
-define('CORE', ROOT.'core/');
-define('CLASSES', CORE.'classes/');
-define('ML', __DIR__.'/ml/');
-
-define('METHOD', $_SERVER['REQUEST_METHOD']);
-
+require('consts.php');
 // Require functions
 require('vendor/autoload.php');
 require(CORE.'url.function.php');
