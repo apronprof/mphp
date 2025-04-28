@@ -7,11 +7,10 @@ $router = new Router;
 // Routes
 
 $router->get('', 'IndexController@index');
-$router->get('/hello', 'IndexController@hello');
-$router->get('auth/{id}', 'IndexController@user', [new App\Middlewares\AuthMiddleware()]);
+$router->get('/getjson', 'IndexController@getJson');
 
 $router->group('/user', function($router){
-    $router->get('/{id}', 'IndexController@user');
+    $router->get('/{id}', 'IndexController@user', [new App\Middlewares\AuthMiddleware()]);
 });
 
 $router->_404('IndexController@_404');

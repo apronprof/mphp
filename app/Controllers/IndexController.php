@@ -14,9 +14,9 @@ class IndexController extends Controller
         return $this->view('home', ['prediction' => $lr->predict([220])]);
     }
 
-    public function hello($request){
+    public function getJson($request){
         $data = Info::get();
-        return $this->response(200, $data[0]['info']);
+        return $this->json(200, $data);
     }
 
     public function user($request){

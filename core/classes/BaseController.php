@@ -20,6 +20,10 @@ class BaseController
             ->withHeader('Content-Type', $type);
     }
 
+    protected function json($status = 200, $body = ''){
+        return $this->response($status, json_encode($body), 'application/json');
+    }
+
     protected function view($__name, $__params = []){
         $psr17Factory = new Psr17Factory();
         include(CORE . 'assets.function.php');
