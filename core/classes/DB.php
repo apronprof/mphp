@@ -11,7 +11,10 @@ class DB
 
     private static $link = null;
 
-    public function __construct($db_config){
+    public function __construct($db_config = null){
+        if($db_config == null){
+            $db_config = require(\CONFIG."db.php");
+        }
         switch($db_config['db']){
             case null:
                 break;

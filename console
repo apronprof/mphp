@@ -56,9 +56,7 @@ class TrainModelCommand extends Command
 
         if(file_exists($Path)){
             require($Path);
-            $name = '\\ML\\Trainers\\' . $name;
-            $obj = new $name();
-            $obj->train();
+            //$name = '\\ML\\Trainers\\' . $name;
 
             $output->writeln("<info>Model is trained successfully</info>");
             return Command::SUCCESS;
