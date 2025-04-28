@@ -83,27 +83,9 @@ foreach($matched['params'] as $key => $value){
 
 // DB connection
 $config['db'] = require(CONFIG.'db.php');
+$db = new DB($config['db']);
 
-$db_config = $config['db'];
 
-switch($db_config['db']){
-    case null:
-        break;
-    case 'mysql':
-        $mysql = $db_config['mysql'];
-        $dsn = 'mysql:host='.$mysql['host'].';dbname='.$mysql['name'].';charset='.$mysql['charset'];
-        DB::connect($dsn, $mysql['user'], $mysql['pass']);
-        break;
-    case 'sqlite3':
-        $file = $db_config['sqlite3']['file'];
-        $dsn = 'sqlite:'.DB.'sqlite3/'.$file;
-        DB::connect($dsn, '', '', true);
-        break;
-}
-
-/*if(file_exists(ROOT.'migrate.php'))
-    require(ROOT.'migrate.php');
-*/  
 
 // Middlewares
 session_start();

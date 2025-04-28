@@ -7,7 +7,7 @@ $router = new Router;
 // Routes
 
 $router->get('', 'IndexController@index');
-$router->get('/hello', 'IndexController@index');
+$router->get('/hello', 'IndexController@hello');
 $router->get('auth/{id}', 'IndexController@user', [new App\Middlewares\AuthMiddleware()]);
 
 $router->group('/user', function($router){
