@@ -52,41 +52,49 @@ class Router
         $this->prefix = $prevPrefix;
     }
 
-    public function match($url_arr){
+    
+    public function match($url_arr)
+    {
         $method = $this->method;
-        $set_urls = $this->$method;
+        $set_urls = $this->$method ?? [];
 
-        foreach($set_urls as $url => $controller){
-            $get_arr = explode('/', $url);
-            $params = [];
+        // Преобразуем URL в строку, убирая ведущие и конечные слеши
+        $requestUri = empty($url_arr) || $url_arr === [''] ? '/' : '/' . implode('/', array_filter($url_arr, fn($v) => $v !== ''));
+        $requestUri = rtrim($requestUri, '/');
 
-            for($i=0;$i<count($get_arr);$i++){
-                if(!isset($url_arr[$i])){
-                    continue(2);
-                }
-                if(count($get_arr) != count($url_arr)){
-                    continue(2);
+        foreach ($set_urls as $pattern => $controller) {
+            // Нормализуем шаблон маршрута
+            $cleanPattern = $pattern === '' || $pattern === '/' ? '/' : '/' . trim($pattern, '/');
+            
+            // Преобразуем {parameter} в регулярное выражение
+            $regex = preg_replace('#\{[a-zA-Z0-9_]+\}#', '([^/]+)', $cleanPattern);
+            $regex = '#^' . ($cleanPattern === '/' ? '' : $regex) . '$#';
+
+            // Проверяем совпадение
+            if (preg_match($regex, $requestUri, $matches)) {
+                $params = [];
+                if (count($matches) > 1) {
+                    // Извлекаем имена параметров
+                    preg_match_all('#\{([a-zA-Z0-9_]+)\}#', $pattern, $paramNames);
+                    $paramNames = $paramNames[1];
+                    array_shift($matches); // Удаляем полное совпадение
+
+                    // Сопоставляем имена и значения
+                    foreach ($paramNames as $index => $name) {
+                        $params[$name] = $matches[$index];
+                    }
                 }
 
-                if($get_arr[$i] == $url_arr[$i]){
-                    continue;
-                }
-                else if(isset(explode('{', $get_arr[$i])[1])){
-                    $params[trim($get_arr[$i], '{}')] = $url_arr[$i];
-                    continue;
-                }
-                else{
-                    continue(2);
-                }
+                return ['controller' => $controller, 'params' => $params];
             }
-
-            return ['controller' => $controller, 'params' => $params];
         }
-        if(isset($this->_404)){
+
+        if (isset($this->_404)) {
             return ['controller' => [$this->_404, []], 'params' => []];
         }
-        return ['controller' => ['Controller@_404', []], 'params' => []]; 
-    }
+
+        return ['controller' => ['Controller@_404', []], 'params' => []];
+    } 
 
     public function _404($controller){
         $this->_404 = $controller;
