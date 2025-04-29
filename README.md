@@ -1,10 +1,10 @@
 # mPHP
-mPHP is a free open source php framework with machine learning opportunities.
+SmantU is a free open source php framework with machine learning opportunities.
 
 ## Getting started
 Download the files from the main branch using
 
-> gh repo clone apronprof/mphp
+> git clone apronprof/smantu
 
 run 
 
