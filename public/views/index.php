@@ -6,8 +6,8 @@
     <title></title>
 </head>
 <body>
-    <h1>Befree_online</h1>
-
-    <h2>Current username: <?= $user ?></h2>
+    <h1>mPHP home page</h1>
+    <br/>
+    <h2>Welcome!</h2>
 </body>
 </html>

@@ -4,21 +4,22 @@ namespace App\Controllers;
 
 use \Core\Classes\DB;
 use \App\MLApi;
-//use \Core\Classes\MLService;
-use \App\Models\User;
 use \App\Models\Info;
 
 class IndexController extends Controller
 {
     public function index($request){
+        return $this->view('index');
+    }
+
+    public function predict($request){
         $lr = new MLApi('lr');
-        //$lr2 = $lr->save('lr2');
-        return $this->view('home', ['prediction' => $lr->info()]);
+        $prediction = $lr->predict([$request->getAttribute('num')]);
+        return $this->view('predict', ['prediction' => $prediction]);
     }
 
     public function getJson($request){
-        $data = Info::get();
-        return $this->json(200, $data);
+        return $this->json(200, ['data' => [1 => 'test']]);
     }
 
     public function user($request){

@@ -25,27 +25,27 @@ class Router
         }
     }
 
-    public function get($url, $controller, $middlewares = []){
+    public function get(string $url, string $controller, array $middlewares = []){
         $this->get[$this->prefix . $url] = [$controller, $middlewares];
     }
 
-    public function post($url, $controller, $middlewares = []){
+    public function post(string $url, string $controller, array $middlewares = []){
         $this->post[$this->prefix . $url] = [$controller, $middlewares];
     }
 
-    public function put($url, $controller, $middlewares = []){
+    public function put(string $url, string $controller, array $middlewares = []){
         $this->put[$this->prefix . $url] = [$controller, $middlewares];
     }
 
-    public function delete($url, $controller, $middlewares = []){
+    public function delete(string $url, string $controller, array $middlewares = []){
         $this->delete[$this->prefix . $url] = [$controller, $middlewares];
     }
 
-    public function patch($url, $controller, $middlewares = []){
+    public function patch(string $url, string $controller, array $middlewares = []){
         $this->patch[$this->prefix . $url] = [$controller, $middlewares];
     }
 
-    public function group($prefix, $function){
+    public function group(string $prefix, $function){
         $prevPrefix = $this->prefix;
         $this->prefix = $prefix;
         $function($this);

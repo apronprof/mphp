@@ -16,7 +16,7 @@ class DB
             $db_config = require(\CONFIG."db.php");
         }
         switch($db_config['db']){
-            case null:
+            case '':
                 break;
             case 'mysql':
                 $mysql = $db_config['mysql'];
@@ -32,17 +32,12 @@ class DB
     }
 
     public static function connect($dsn, $user, $pass, $sqlite3 = false){
-        try{
-            if(self::$link != null) throw new PDOException('already connected to DB');
+        if(self::$link != null) throw new PDOException('already connected to DB');
 
-            if($sqlite3)
-                self::$link = new \PDO($dsn);
-            else
-                self::$link = new \PDO($dsn, $user, $pass);
-        }
-        catch(PDOException $e){
-            error_log($e->getMessage().'<br/>'.'line: '.$e->getLine());
-        }
+        if($sqlite3)
+            self::$link = new \PDO($dsn);
+        else
+            self::$link = new \PDO($dsn, $user, $pass);
     }
 
     public static function getDB(){

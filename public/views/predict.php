@@ -6,6 +6,6 @@
 </head>
 <body>
     <h1>hello world</h1>
-    <h2>Prediction is <?= var_dump($prediction) ?></h2>
+    <h2>Prediction is <?= $prediction[0] ?></h2>
 </body>
 </html>

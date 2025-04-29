@@ -7,6 +7,7 @@ $router = new Router;
 // Routes
 
 $router->get('', 'IndexController@index');
+$router->get('predict/{num}', 'IndexController@predict');
 $router->get('/getjson', 'IndexController@getJson');
 
 $router->group('/user', function($router){
