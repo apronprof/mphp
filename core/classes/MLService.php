@@ -30,6 +30,17 @@ class MLService
         return $this->model->predict(new Unlabeled($args));
     }
 
+    public function save($newName=''){
+        if($newName==''){
+            $this->model->save();
+            return;
+        }
+
+        $newPath = ML."models/$newName.rbx";
+        copy($this->modelPath, $newPath);
+        return new self($newName);
+    }
+
     public function getModelPath($name){
         return $this->modelPath;
     }

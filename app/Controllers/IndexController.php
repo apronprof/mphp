@@ -11,7 +11,8 @@ class IndexController extends Controller
 {
     public function index($request){
         $lr = new MLService('lr');
-        return $this->view('home', ['prediction' => $lr->predict([220])]);
+        $lr2 = $lr->save('lr2');
+        return $this->view('home', ['prediction' => $lr2->predict([220])]);
     }
 
     public function getJson($request){
