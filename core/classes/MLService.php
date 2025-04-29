@@ -15,7 +15,7 @@ use Rubix\ML\CrossValidation\Metrics\MeanSquaredError;
 
 class MLService
 {
-    private 
+    protected
         $modelPath,
         $model;
 
@@ -25,7 +25,7 @@ class MLService
     }
 
     
-    private function connect(){
+    protected function connect(){
         $this->model = PersistentModel::load(new Filesystem($this->modelPath), new RBX());
     }
 
@@ -42,6 +42,14 @@ class MLService
         $newPath = ML."models/$newName.rbx";
         copy($this->modelPath, $newPath);
         return new self($newName);
+    }
+
+    public function info(){
+        return [
+            'class' => get_class($this->model),
+            'trained' => $this->model->trained(),
+            'params' => method_exists($this->model, 'params') ? $this->model->params() : null,
+        ];
     }
 
     public function mse($samples, $labels){

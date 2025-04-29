@@ -13,7 +13,7 @@ class IndexController extends Controller
     public function index($request){
         $lr = new MLApi('lr');
         //$lr2 = $lr->save('lr2');
-        return $this->view('home', ['prediction' => $lr->mse([1, 2], [2, 4])]);
+        return $this->view('home', ['prediction' => $lr->info()]);
     }
 
     public function getJson($request){
