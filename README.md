@@ -1,4 +1,4 @@
-# mPHP
+# SmantU
 SmantU is a free open source php framework with machine learning opportunities.
 
 ## Getting started
