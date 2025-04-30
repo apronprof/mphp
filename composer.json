@@ -27,5 +27,7 @@
             "App\\": "app/",
             "ML\\Trainers\\": "ml/trainers"
         }
-    }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
 }
