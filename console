@@ -295,7 +295,7 @@ class $controllerName extends Controller
     public function index()
     {
         
-        return $this->response(200);
+        return \$this->response(200);
     }
 }
 PHP;
