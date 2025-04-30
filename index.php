@@ -19,6 +19,7 @@ use Laminas\HttpHandlerRunner\Emitter\SapiEmitter;
 
 // Require config
 $config['app'] = require(CONFIG.'app.php');
+define('APPURL', $config['app']['url']);
 define('DEBUG', $config['app']['debug']);
 
 
