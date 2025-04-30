@@ -12,6 +12,7 @@ class Router
         $patch = [],
         $method = 'get',
         $prefix = '',
+        $middlewares = [],
         $_404 = null;
 
     public function __construct(){
@@ -26,30 +27,33 @@ class Router
     }
 
     public function get(string $url, string $controller, array $middlewares = []){
-        $this->get[$this->prefix . $url] = [$controller, $middlewares];
+        $this->get[$this->prefix . $url] = [$controller, array_merge($this->middlewares, $middlewares)];
     }
 
     public function post(string $url, string $controller, array $middlewares = []){
-        $this->post[$this->prefix . $url] = [$controller, $middlewares];
+        $this->post[$this->prefix . $url] = [$controller, array_merge($this->middlewares, $middlewares)];
     }
 
     public function put(string $url, string $controller, array $middlewares = []){
-        $this->put[$this->prefix . $url] = [$controller, $middlewares];
+        $this->put[$this->prefix . $url] = [$controller, array_merge($this->middlewares, $middlewares)];
     }
 
     public function delete(string $url, string $controller, array $middlewares = []){
-        $this->delete[$this->prefix . $url] = [$controller, $middlewares];
+        $this->delete[$this->prefix . $url] = [$controller, array_merge($this->middlewares, $middlewares)];
     }
 
     public function patch(string $url, string $controller, array $middlewares = []){
-        $this->patch[$this->prefix . $url] = [$controller, $middlewares];
+        $this->patch[$this->prefix . $url] = [$controller, array_merge($this->middlewares, $middlewares)];
     }
 
-    public function group(string $prefix, $function){
+    public function group(string $prefix, $function, array $middlewares = []){
         $prevPrefix = $this->prefix;
+        $prevMiddlewares = $this->middlewares;
         $this->prefix = $prefix;
+        $this->middlewares = $middlewares;
         $function($this);
         $this->prefix = $prevPrefix;
+        $this->middlewares = $prevMiddlewares;
     }
 
     

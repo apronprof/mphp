@@ -11,8 +11,8 @@ $router->get('predict/{num}', 'IndexController@predict');
 $router->get('/getjson', 'IndexController@getJson');
 
 $router->group('/user', function($router){
-    $router->get('/{id}', 'IndexController@user', [new App\Middlewares\AuthMiddleware()]);
-});
+    $router->get('/{id}', 'IndexController@user');
+}, [new App\Middlewares\AuthMiddleware()]);
 
 $router->_404('IndexController@_404');
 
